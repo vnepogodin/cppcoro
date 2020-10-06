@@ -27,7 +27,8 @@ The branches are:
   * [Pull request 125](https://github.com/lewissbaker/cppcoro/pull/125) solved it for filesystem
   * [Pull request 158](https://github.com/lewissbaker/cppcoro/pull/158) has a nice solution.
   * [Pull reqeust 169](https://github.com/lewissbaker/cppcoro/pull/169) solved it with preprocessor defines
-
+* Some modifications required for gcc which should brake nothing else are in
+  branch [fixed_for_gcc](https://github.com/andreasbuhr/cppcoro/tree/fixes_for_gcc).
 
 Furthermore, there is the branch [integrate_all](https://github.com/andreasbuhr/cppcoro/tree/integrate_all)
 which merges all branches mentioned above. It is intended for

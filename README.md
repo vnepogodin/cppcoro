@@ -1,3 +1,30 @@
+# Fork to help maintaining cppcoro
+
+In the original [cppcoro library](https://github.com/lewissbaker/cppcoro),
+there are some issues which are solved in multiple pull requests. Among those:
+
+* Including 'coroutine' versus including 'experimental/coroutine'
+* Using namespace 'std::' versus using namespace 'std::experimental'
+* Linux support
+* CMake support
+
+This fork aims at creating easy to merge pull requests for each
+topic, where concerns are separated, i.e. each pull request
+cares only about one problem.
+
+The branches are:
+* For adding CMake support it is [add_cmake_support](https://github.com/andreasbuhr/cppcoro/tree/add_cmake_support).
+  It is based on the pull request [110](https://github.com/lewissbaker/cppcoro/pull/110) by mmha.
+  mmha created this pull request on Apr 23, 2019.
+  dutow used this to base his pull request [158](https://github.com/lewissbaker/cppcoro/pull/158) on it.
+  CMake support was again created by Garcia6l20 in pull request [169](https://github.com/lewissbaker/cppcoro/pull/169).
+* For broader QA, support for github actions is developed
+  in [add_github_actions](https://github.com/andreasbuhr/cppcoro/tree/add_github_actions).
+  We aim at testing g++ 10.2, clang and msvc at the moment. Work is in progress.
+
+Furthermore, there is the branch [integrate_all](https://github.com/andreasbuhr/cppcoro/tree/integrate_all)
+which merges in all branches mentioned above. It is inteded for
+testing of the whole thing, it is not intended for merging.
 # CppCoro - A coroutine library for C++
 
 The 'cppcoro' library provides a set of general-purpose primitives for making use of the coroutines TS proposal described in [N4680](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4680.pdf).

@@ -21,9 +21,16 @@ The branches are:
 * For broader QA, support for github actions is developed
   in [add_github_actions](https://github.com/andreasbuhr/cppcoro/tree/add_github_actions).
   We aim at testing g++ 10.2, clang and msvc at the moment. Work is in progress.
+* For caring about the coroutine vs. experimental/coroutine include there is the
+  [unify_experimental_includes](https://github.com/andreasbuhr/cppcoro/tree/unify_experimental_includes)
+  branch. There were multiple fixes for this:
+  * [Pull request 125](https://github.com/lewissbaker/cppcoro/pull/125) solved it for filesystem
+  * [Pull request 158](https://github.com/lewissbaker/cppcoro/pull/158) has a nice solution.
+  * [Pull reqeust 169](https://github.com/lewissbaker/cppcoro/pull/169) solved it with preprocessor defines
+
 
 Furthermore, there is the branch [integrate_all](https://github.com/andreasbuhr/cppcoro/tree/integrate_all)
-which merges in all branches mentioned above. It is inteded for
+which merges all branches mentioned above. It is intended for
 testing of the whole thing, it is not intended for merging.
 # CppCoro - A coroutine library for C++
 

@@ -27,12 +27,9 @@ The branches are:
   * [Pull request 125](https://github.com/lewissbaker/cppcoro/pull/125) solved it for filesystem
   * [Pull request 158](https://github.com/lewissbaker/cppcoro/pull/158) has a nice solution.
   * [Pull reqeust 169](https://github.com/lewissbaker/cppcoro/pull/169) solved it with preprocessor defines
-* Some modifications required for gcc which should brake nothing else are in
-  branch [fixed_for_gcc](https://github.com/andreasbuhr/cppcoro/tree/fixes_for_gcc).
 
-Furthermore, there is the branch [integrate_all](https://github.com/andreasbuhr/cppcoro/tree/integrate_all)
-which merges all branches mentioned above. It is intended for
-testing of the whole thing, it is not intended for merging.
+In the master branch, all efforts are combined. Current build status for master branch: [![Actions Status](https://github.com/andreasbuhr/cppcoro/workflows/CMake/badge.svg)](https://github.com/andreasbuhr/cppcoro/actions).
+The master branch is not intended for merging.
 # CppCoro - A coroutine library for C++
 
 The 'cppcoro' library provides a large set of general-purpose primitives for making use of the coroutines TS proposal described in [N4680](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4680.pdf).

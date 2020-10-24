@@ -749,7 +749,7 @@ namespace cppcoro
   {
   public:
     bool await_ready() const noexcept;
-    bool await_suspend(std::experimental::coroutine_handle<> awaiter) noexcept;
+    bool await_suspend(cppcoro::coroutine_handle<> awaiter) noexcept;
     void await_resume() const noexcept;
   };
 
@@ -757,7 +757,7 @@ namespace cppcoro
   {
   public:
     bool await_ready() const noexcept;
-    bool await_suspend(std::experimental::coroutine_handle<> awaiter) noexcept;
+    bool await_suspend(cppcoro::coroutine_handle<> awaiter) noexcept;
     [[nodiscard]] async_mutex_lock await_resume() const noexcept;
   };
 
@@ -871,7 +871,7 @@ namespace cppcoro
     async_manual_reset_event_operation(async_manual_reset_event& event) noexcept;
 
     bool await_ready() const noexcept;
-    bool await_suspend(std::experimental::coroutine_handle<> awaiter) noexcept;
+    bool await_suspend(cppcoro::coroutine_handle<> awaiter) noexcept;
     void await_resume() const noexcept;
   };
 }
@@ -939,7 +939,7 @@ namespace cppcoro
     async_auto_reset_event_operation(const async_auto_reset_event_operation& other) noexcept;
 
     bool await_ready() const noexcept;
-    bool await_suspend(std::experimental::coroutine_handle<> awaiter) noexcept;
+    bool await_suspend(cppcoro::coroutine_handle<> awaiter) noexcept;
     void await_resume() const noexcept;
 
   };
@@ -1424,7 +1424,7 @@ namespace cppcoro
       schedule_operation(static_thread_pool* tp) noexcept;
 
       bool await_ready() noexcept;
-      bool await_suspend(std::experimental::coroutine_handle<> h) noexcept;
+      bool await_suspend(cppcoro::coroutine_handle<> h) noexcept;
       bool await_resume() noexcept;
 
     private:
@@ -1581,7 +1581,7 @@ namespace cppcoro
     schedule_operation& operator=(const schedule_operation&) noexcept;
 
     bool await_ready() const noexcept;
-    void await_suspend(std::experimental::coroutine_handle<> awaiter) noexcept;
+    void await_suspend(cppcoro::coroutine_handle<> awaiter) noexcept;
     void await_resume() noexcept;
   };
 
@@ -1595,7 +1595,7 @@ namespace cppcoro
     timed_schedule_operation& operator=(timed_schedule_operation&&) = delete;
 
     bool await_ready() const noexcept;
-    void await_suspend(std::experimental::coroutine_handle<> awaiter);
+    void await_suspend(cppcoro::coroutine_handle<> awaiter);
     void await_resume();
   };
 
@@ -1626,12 +1626,12 @@ Example:
 #include <cppcoro/io_service.hpp>
 #include <cppcoro/read_only_file.hpp>
 
-#include <experimental/filesystem>
+#include <cppcoro/filesystem.hpp>
 #include <memory>
 #include <algorithm>
 #include <iostream>
 
-namespace fs = std::experimental::filesystem;
+namespace fs = cppcoro::filesystem;
 
 cppcoro::task<std::uint64_t> count_lines(cppcoro::io_service& ioService, fs::path path)
 {
@@ -1775,7 +1775,7 @@ namespace cppcoro
     file_read_operation(file_read_operation&& other) noexcept;
 
     bool await_ready() const noexcept;
-    bool await_suspend(std::experimental::coroutine_handle<> awaiter);
+    bool await_suspend(cppcoro::coroutine_handle<> awaiter);
     std::size_t await_resume();
 
   };
@@ -1787,7 +1787,7 @@ namespace cppcoro
     file_write_operation(file_write_operation&& other) noexcept;
 
     bool await_ready() const noexcept;
-    bool await_suspend(std::experimental::coroutine_handle<> awaiter);
+    bool await_suspend(cppcoro::coroutine_handle<> awaiter);
     std::size_t await_resume();
 
   };
@@ -1809,7 +1809,7 @@ namespace cppcoro
     [[nodiscard]]
     static read_only_file open(
       io_service& ioService,
-      const std::experimental::filesystem::path& path,
+      const cppcoro::filesystem::path& path,
       file_share_mode shareMode = file_share_mode::read,
       file_buffering_mode bufferingMode = file_buffering_mode::default_);
 
@@ -1822,7 +1822,7 @@ namespace cppcoro
     [[nodiscard]]
     static write_only_file open(
       io_service& ioService,
-      const std::experimental::filesystem::path& path,
+      const cppcoro::filesystem::path& path,
       file_open_mode openMode = file_open_mode::create_or_open,
       file_share_mode shareMode = file_share_mode::none,
       file_buffering_mode bufferingMode = file_buffering_mode::default_);
@@ -1836,7 +1836,7 @@ namespace cppcoro
     [[nodiscard]]
     static read_write_file open(
       io_service& ioService,
-      const std::experimental::filesystem::path& path,
+      const cppcoro::filesystem::path& path,
       file_open_mode openMode = file_open_mode::create_or_open,
       file_share_mode shareMode = file_share_mode::none,
       file_buffering_mode bufferingMode = file_buffering_mode::default_);
@@ -2829,7 +2829,7 @@ coroutine.
 
 A type that satisfies `Awaiter<T>` must have, for an instance of the type, `awaiter`:
 - `awaiter.await_ready()` -> `bool`
-- `awaiter.await_suspend(std::experimental::coroutine_handle<void>{})` -> `void` or `bool` or `std::experimental::coroutine_handle<P>` for some `P`.
+- `awaiter.await_suspend(cppcoro::coroutine_handle<void>{})` -> `void` or `bool` or `cppcoro::coroutine_handle<P>` for some `P`.
 - `awaiter.await_resume()` -> `T`
 
 Any type that implements the `Awaiter<T>` concept also implements the `Awaitable<T>` concept.

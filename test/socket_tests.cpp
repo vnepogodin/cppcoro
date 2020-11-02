@@ -245,7 +245,7 @@ TEST_CASE("send/recv TCP/IPv4 many connections")
 		co_await s.disconnect();
 	};
 
-	auto echoServer = [&](cancellation_token ct) -> task<>
+	auto echoServer = [&](cancellation_token ct) -> task<void>
 	{
 		async_scope connectionScope;
 
@@ -304,7 +304,7 @@ TEST_CASE("send/recv TCP/IPv4 many connections")
 			CHECK(totalBytesReceived == 1000);
 		};
 
-		auto send = [&]() -> task<>
+		auto send = [&]() -> task<void>
 		{
 			std::uint8_t buffer[100];
 			for (std::uint64_t i = 0; i < 1000; i += sizeof(buffer))

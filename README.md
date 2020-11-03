@@ -1,4 +1,4 @@
-# Fork to help maintaining cppcoro
+# Fork to help maintaining cppcoro 
 
 In the original [cppcoro library](https://github.com/lewissbaker/cppcoro),
 there are some issues which are solved in multiple pull requests. Among those:

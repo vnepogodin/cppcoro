@@ -150,4 +150,17 @@
 # define CPPCORO_CPU_CACHE_LINE 64
 #endif
 
+#if CPPCORO_COMPILER_MSVC
+    #if __has_include(<coroutine>)
+    #include <yvals_core.h>
+    #ifdef __cpp_lib_coroutine
+    #define CPPCORO_COROHEADER_FOUND_AND_USABLE
+    #endif
+    #endif
+#else
+    #if __has_include(<coroutine>)
+    #define CPPCORO_COROHEADER_FOUND_AND_USABLE
+    #endif
+#endif
+
 #endif

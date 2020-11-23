@@ -1,9 +1,11 @@
 #ifndef CPPCORO_COROUTINE_HPP_INCLUDED
 #define CPPCORO_COROUTINE_HPP_INCLUDED
 
-#if __has_include(<coroutine>)
+#include <cppcoro/config.hpp>
 
-#include <coroutine>
+#ifdef CPPCORO_COROHEADER_FOUND_AND_USABLE
+
+#includue <coroutine>
 
 namespace cppcoro {
   using std::coroutine_handle;

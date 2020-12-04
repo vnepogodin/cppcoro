@@ -20,35 +20,76 @@ jobs:
       matrix:
         config:
           - {
-            name: "Linux g++ 10.2",
+            name: "Linux g++ 10.2 C++17",
             os: ubuntu-20.04,
             cxx: "g++-10",
+            cxxver: 17,
           }
           - {
-            name: "Linux clang-10",
+            name: "Linux g++ 10.2 C++20",
+            os: ubuntu-20.04,
+            cxx: "g++-10",
+            cxxver: 20,
+          }
+          - {
+            name: "Linux clang-10 C++17",
             os: ubuntu-20.04,
             cxx: "clang++-10",
             cxx_flags: -stdlib=libc++,
             exe_linker_flags: -lc++,
+            cxxver: 17,
           }
           - {
-            name: "Linux clang-11",
+            name: "Linux clang-10 C++20",
+            os: ubuntu-20.04,
+            cxx: "clang++-10",
+            cxx_flags: -stdlib=libc++,
+            exe_linker_flags: -lc++,
+            cxxver: 20,
+          }
+          - {
+            name: "Linux clang-11 C++17",
             os: ubuntu-20.04,
             cxx: "clang++-11",
             cxx_flags: -stdlib=libc++,
             exe_linker_flags: -lc++,
+            cxxver: 17,
           }
           - {
-            name: "Windows MSVC 2017 (x64)",
+            name: "Linux clang-11 C++20",
+            os: ubuntu-20.04,
+            cxx: "clang++-11",
+            cxx_flags: -stdlib=libc++,
+            exe_linker_flags: -lc++,
+            cxxver: 20,
+          }
+          - {
+            name: "Windows MSVC 2017 (x64) C++17",
             os: windows-2016,
             cxx: "cl",
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2017/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+            cxxver: 17,
           }
           - {
-            name: "Windows MSVC 2019 (x64)",
+            name: "Windows MSVC 2017 (x64) C++20",
+            os: windows-2016,
+            cxx: "cl",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2017/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+            cxxver: 20,
+          }
+          - {
+            name: "Windows MSVC 2019 (x64) C++17",
             os: windows-latest,
             cxx: "cl",
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+            cxxver: 17,
+          }
+          - {
+            name: "Windows MSVC 2019 (x64) C++20",
+            os: windows-latest,
+            cxx: "cl",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+            cxxver: 20,
           }
 
     steps:
@@ -106,7 +147,7 @@ jobs:
 
         cmake $GITHUB_WORKSPACE \
           -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
-          -DCMAKE_CXX_STANDARD=20 \
+          -DCMAKE_CXX_STANDARD=${{ matrix.config.cxxver }} \
           -DBUILD_TESTING=ON \
           -DCMAKE_CXX_FLAGS=${{ matrix.config.cxx_flags }} \
           -DCMAKE_EXE_LINKER_FLAGS=${{ matrix.config.exe_linker_flags }} \

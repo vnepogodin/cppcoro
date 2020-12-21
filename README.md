@@ -1,18 +1,18 @@
-# Fork to help maintaining cppcoro
+# Maintained fork of cppcoro
 
-In the original [cppcoro library](https://github.com/lewissbaker/cppcoro),
-there are some issues which are solved in multiple pull requests. Among those:
+The repository [andreasbuhr/cppcoro](https://github.com/andreasbuhr/cppcoro)
+is a fork of the original [cppcoro library](https://github.com/lewissbaker/cppcoro)
+library. The differences to the original cppcoro are:
 
-* Including 'coroutine' versus including 'experimental/coroutine'
-* Using namespace 'std::' versus using namespace 'std::experimental'
-* Linux support
-* CMake support
+* Automatically including 'coroutine' or 'experimental/coroutine', depending on compiler.
+* Automatically using namespace 'std::' or 'std::experimental'.
+* CMake as build system instead of cake.
+* CI in Github actions instead of appveyor
 
-This fork aims at creating easy to merge pull requests for each
-topic, where concerns are separated, i.e. each pull request
-cares only about one problem.
+andreasbuhr/cppcoro is currently tested with g++-10.2, clang-10, clang-11, clang-12, MSVC-2017, and MSVC-2019
+Current build status for master branch: [![Actions Status](https://github.com/andreasbuhr/cppcoro/workflows/CMake/badge.svg)](https://github.com/andreasbuhr/cppcoro/actions).
 
-The branches are:
+Most of the changes are offered upstream:
 * For adding CMake support it is [add_cmake_support](https://github.com/andreasbuhr/cppcoro/tree/add_cmake_support).
   It is based on the pull request [110](https://github.com/lewissbaker/cppcoro/pull/110) by mmha.
   mmha created this pull request on Apr 23, 2019.
@@ -20,7 +20,6 @@ The branches are:
   CMake support was again created by Garcia6l20 in pull request [169](https://github.com/lewissbaker/cppcoro/pull/169).
 * For broader QA, support for github actions is developed
   in [add_github_actions](https://github.com/andreasbuhr/cppcoro/tree/add_github_actions).
-  We aim at testing g++ 10.2, clang and msvc at the moment. Work is in progress.
 * For caring about the coroutine vs. experimental/coroutine include there is the
   [unify_experimental_includes](https://github.com/andreasbuhr/cppcoro/tree/unify_experimental_includes)
   branch. There were multiple fixes for this:
@@ -28,8 +27,7 @@ The branches are:
   * [Pull request 158](https://github.com/lewissbaker/cppcoro/pull/158) has a nice solution.
   * [Pull reqeust 169](https://github.com/lewissbaker/cppcoro/pull/169) solved it with preprocessor defines
 
-In the master branch, all efforts are combined. Current build status for master branch: [![Actions Status](https://github.com/andreasbuhr/cppcoro/workflows/CMake/badge.svg)](https://github.com/andreasbuhr/cppcoro/actions).
-The master branch is not intended for merging.
+
 # CppCoro - A coroutine library for C++
 
 The 'cppcoro' library provides a large set of general-purpose primitives for making use of the coroutines TS proposal described in [N4680](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4680.pdf).
@@ -2889,11 +2887,7 @@ Given a type, `S`, that implements the `DelayedScheduler` and an instance, `s` o
 
 # Building
 
-The cppcoro library supports building under Windows with Visual Studio 2017 and Linux with Clang 5.0+.
-
-This library makes use of either the [Cake build system](https://github.com/lewissbaker/cake) (no, not the [C# one](http://cakebuild.net/)) or CMake.
-
-The cake build system is checked out automatically as a git submodule so you don't need to download or install it separately.
+andreasbuhr/cppcoro uses CMake as a build system.
 
 ## Building on Windows
 
@@ -2905,18 +2899,12 @@ Support for Linux ([#15](https://github.com/lewissbaker/cppcoro/issues/15)) is p
 
 The CMakeLists requires version 3.13 or later.
 
-The Cake build-system is implemented in Python and requires Python 2.7 to be installed.
-
 Ensure Python 2.7 interpreter is in your PATH and available as 'python'.
 
 Ensure Visual Studio 2017 Update 3 or later is installed.
 Note that there are some known issues with coroutines in Update 2 or earlier that have been fixed in Update 3.
 
 You can also use an experimental version of the Visual Studio compiler by downloading a NuGet package from https://vcppdogfooding.azurewebsites.net/ and unzipping the .nuget file to a directory.
-Just update the `config.cake` file to point at the unzipped location by modifying and uncommenting the following line:
-```python
-nugetPath = None # r'C:\Path\To\VisualCppTools.14.0.25224-Pre'
-```
 
 Ensure that you have the Windows 10 SDK installed.
 It will use the latest Windows 10 SDK and Universal C Runtime version by default.
@@ -2997,69 +2985,6 @@ $ cmake . -Dcppcoro_ROOT=$HOME/.local
 # ...
 ```
 
-#### With Cake
-
-To build from the command-line just run 'cake.bat' in the workspace root.
-
-eg.
-```
-C:\cppcoro> cake.bat
-Building with C:\cppcoro\config.cake - Variant(release='debug', platform='windows', architecture='x86', compilerFamily='msvc', compiler='msvc14.10')
-Building with C:\cppcoro\config.cake - Variant(release='optimised', platform='windows', architecture='x64', compilerFamily='msvc', compiler='msvc14.10')
-Building with C:\cppcoro\config.cake - Variant(release='debug', platform='windows', architecture='x64', compilerFamily='msvc', compiler='msvc14.10')
-Building with C:\cppcoro\config.cake - Variant(release='optimised', platform='windows', architecture='x86', compilerFamily='msvc', compiler='msvc14.10')
-Compiling test\main.cpp
-Compiling test\main.cpp
-Compiling test\main.cpp
-Compiling test\main.cpp
-...
-Linking build\windows_x86_msvc14.10_debug\test\run.exe
-Linking build\windows_x64_msvc14.10_optimised\test\run.exe
-Linking build\windows_x86_msvc14.10_optimised\test\run.exe
-Linking build\windows_x64_msvc14.10_debug\test\run.exe
-Generating code
-Finished generating code
-Generating code
-Finished generating code
-Build succeeded.
-Build took 0:00:02.419.
-```
-
-By default, running `cake` with no arguments will build all projects with all build variants and execute the unit-tests.
-You can narrow what is built by passing additional command-line arguments.
-eg.
-```
-c:\cppcoro> cake.bat release=debug architecture=x64 lib/build.cake
-Building with C:\Users\Lewis\Code\cppcoro\config.cake - Variant(release='debug', platform='windows', architecture='x64', compilerFamily='msvc', compiler='msvc14.10')
-Archiving build\windows_x64_msvc14.10_debug\lib\cppcoro.lib
-Build succeeded.
-Build took 0:00:00.321.
-```
-
-You can run `cake --help` to list available command-line options.
-
-### Building Visual Studio project files
-
-To develop from within Visual Studio you can build .vcproj/.sln files by running `cake.bat -p`.
-
-eg.
-```
-c:\cppcoro> cake.bat -p
-Building with C:\cppcoro\config.cake - Variant(release='debug', platform='windows', architecture='x86', compilerFamily='msvc', compiler='msvc14.10')
-Building with C:\cppcoro\config.cake - Variant(release='optimised', platform='windows', architecture='x64', compilerFamily='msvc', compiler='msvc14.10')
-Building with C:\cppcoro\config.cake - Variant(release='debug', platform='windows', architecture='x64', compilerFamily='msvc', compiler='msvc14.10')
-Building with C:\cppcoro\config.cake - Variant(release='optimised', platform='windows', architecture='x86', compilerFamily='msvc', compiler='msvc14.10')
-Generating Solution build/project/cppcoro.sln
-Generating Project build/project/cppcoro_tests.vcxproj
-Generating Filters build/project/cppcoro_tests.vcxproj.filters
-Generating Project build/project/cppcoro.vcxproj
-Generating Filters build/project/cppcoro.vcxproj.filters
-Build succeeded.
-Build took 0:00:00.247.
-```
-
-When you build these projects from within Visual Studio it will call out to cake to perform the compilation.
-
 ## Building on Linux
 
 The cppcoro project can also be built under Linux using Clang + libc++ 5.0 or later.
@@ -3086,171 +3011,6 @@ Checkout cppcoro and its submodules:
 ```
 git clone --recursive https://github.com/lewissbaker/cppcoro.git cppcoro
 ```
-
-Run `init.sh` to setup the `cake` bash function:
-```
-cd cppcoro
-source init.sh
-```
-
-Then you can run `cake` from the workspace root to build cppcoro and run tests:
-```
-$ cake
-```
-
-You can specify additional command-line arguments to customise the build:
-* `--help` will print out help for command-line arguments
-* `--debug=run` will show the build command-lines being run
-* `release=debug` or `release=optimised` will limit the build variant to
-   either debug or optimised (by default it will build both).
-* `lib/build.cake` will just build the cppcoro library and not the tests.
-* `test/build.cake@task_tests.cpp` will just compile a particular source file
-* `test/build.cake@testresult` will build and run the tests
-
-For example:
-```
-$ cake --debug=run release=debug lib/build.cake
-```
-
-### Customising location of Clang
-
-If your clang compiler is not located at `/usr/bin/clang` then you can specify an
-alternative location using one or more of the following command-line options for `cake`:
-
-* `--clang-executable=<name>` - Specify the clang executable name to use instead of `clang`.
-  eg. to force use of Clang 8.0 pass `--clang-executable=clang-8`
-* `--clang-executable=<abspath>` - Specify the full path to clang executable.
-  The build system will also look for other executables in the same directory.
-  If this path has the form `<prefix>/bin/<name>` then this will also set the default clang-install-prefix to `<prefix>`.
-* `--clang-install-prefix=<path>` - Specify path where clang has been installed.
-  This will cause the build system to look for clang under `<path>/bin` (unless overridden by `--clang-executable`).
-* `--libcxx-install-prefix=<path>` - Specify path where libc++ has been installed.
-  By default the build system will look for libc++ in the same location as clang.
-  Use this command-line option if it is installed in a different location.
-
-Example: Use a specific version of clang installed in the default location
-```
-$ cake --clang-executable=clang-8
-```
-
-Example: Use the default version of clang from a custom location
-```
-$ cake --clang-install-prefix=/path/to/clang-install
-```
-
-Example: Use a specific version of clang, in a custom location, with libc++ from a different location
-```
-$ cake --clang-executable=/path/to/clang-install/bin/clang-8 --libcxx-install-prefix=/path/to/libcxx-install
-```
-
-### Using a snapshot build of Clang
-
-If your Linux distribution does not have a version of Clang 5.0 or later
-available, you can install a snapshot build from the LLVM project.
-
-Follow instructions at http://apt.llvm.org/ to setup your package manager
-to support pulling from the LLVM package manager.
-
-For example, for Ubuntu 17.04 Zesty:
-
-Edit `/etc/apt/sources.list` and add the following lines:
-```
-deb http://apt.llvm.org/zesty/ llvm-toolchain-zesty main
-deb-src http://apt.llvm.org/zesty/ llvm-toolchain-zesty main
-```
-
-Install the PGP key for those packages:
-```
-$ wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-```
-
-Install Clang and LLD:
-```
-$ sudo apt-get install clang-6.0 lld-6.0
-```
-
-The LLVM snapshot builds do not include libc++ versions so you'll need to build that yourself.
-See below.
-
-### Building your own Clang
-
-You can also use the bleeding-edge Clang version by building Clang from source yourself.
-
-See instructions here:
-
-To do this you will need to install the following pre-requisites:
-```
-$ sudo apt-get install git cmake ninja-build clang lld
-```
-
-Note that we are using your distribution's version of clang to build
-clang from source. GCC could also be used here instead.
-
-
-Checkout LLVM + Clang + LLD + libc++ repositories:
-```
-mkdir llvm
-cd llvm
-git clone --depth=1 https://github.com/llvm-mirror/llvm.git llvm
-git clone --depth=1 https://github.com/llvm-mirror/clang.git llvm/tools/clang
-git clone --depth=1 https://github.com/llvm-mirror/lld.git llvm/tools/lld
-git clone --depth=1 https://github.com/llvm-mirror/libcxx.git llvm/projects/libcxx
-ln -s llvm/tools/clang clang
-ln -s llvm/tools/lld lld
-ln -s llvm/projects/libcxx libcxx
-```
-
-Configure and build Clang:
-```
-mkdir clang-build
-cd clang-build
-cmake -GNinja \
-      -DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
-      -DCMAKE_C_COMPILER=/usr/bin/clang \
-      -DCMAKE_BUILD_TYPE=MinSizeRel \
-      -DCMAKE_INSTALL_PREFIX="/path/to/clang/install"
-      -DCMAKE_BUILD_WITH_INSTALL_RPATH="yes" \
-      -DLLVM_TARGETS_TO_BUILD=X86 \
-      -DLLVM_ENABLE_PROJECTS="lld;clang" \
-      ../llvm
-ninja install-clang \
-      install-clang-headers \
-      install-llvm-ar \
-      install-lld
-```
-
-### Building libc++
-
-The cppcoro project requires libc++ as it contains the `<experimental/coroutine>`
-header required to use C++ coroutines under Clang.
-
-Checkout `libc++` + `llvm`:
-```
-mkdir llvm
-cd llvm
-git clone --depth=1 https://github.com/llvm-mirror/llvm.git llvm
-git clone --depth=1 https://github.com/llvm-mirror/libcxx.git llvm/projects/libcxx
-ln -s llvm/projects/libcxx libcxx
-```
-
-Build `libc++`:
-```
-mkdir libcxx-build
-cd libcxx-build
-cmake -GNinja \
-      -DCMAKE_CXX_COMPILER="/path/to/clang/install/bin/clang++" \
-      -DCMAKE_C_COMPILER="/path/to/clang/install/bin/clang" \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_INSTALL_PREFIX="/path/to/clang/install" \
-      -DLLVM_PATH="../llvm" \
-      -DLIBCXX_CXX_ABI=libstdc++ \
-      -DLIBCXX_CXX_ABI_INCLUDE_PATHS="/usr/include/c++/6.3.0/;/usr/include/x86_64-linux-gnu/c++/6.3.0/" \
-      ../libcxx
-ninja cxx
-ninja install
-```
-
-This will build and install libc++ into the same install directory where you have clang installed.
 
 # Support
 

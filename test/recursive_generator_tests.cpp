@@ -247,7 +247,7 @@ TEST_CASE("exception thrown from recursive call can be caught by caller")
 
 TEST_CASE("exceptions thrown from nested call can be caught by caller")
 {
-#if _MSC_VER == 1929 && _MSVC_LANG == 202002L
+#if _MSC_VER >= 1929 && _MSVC_LANG == 202002L
 /*
  * Crashes. Known bug, reported in
  * https://github.com/andreasbuhr/cppcoro/issues/53

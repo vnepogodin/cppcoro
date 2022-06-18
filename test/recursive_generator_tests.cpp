@@ -247,6 +247,16 @@ TEST_CASE("exception thrown from recursive call can be caught by caller")
 
 TEST_CASE("exceptions thrown from nested call can be caught by caller")
 {
+#if _MSC_VER == 1929 && _MSVC_LANG == 202002L
+/*
+ * Crashes. Known bug, reported in
+ * https://github.com/andreasbuhr/cppcoro/issues/53
+ * and
+ * https://developercommunity.visualstudio.com/t/MSVC-generates-segfaulting-code-for-coro/10074712
+ */
+	return;
+#endif
+
 	class SomeException : public std::exception {};
 
 	auto f = [](std::uint32_t depth, auto&& f) -> recursive_generator<std::uint32_t>

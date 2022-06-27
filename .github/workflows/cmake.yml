@@ -125,17 +125,19 @@ jobs:
           }
           - {
             name: "Windows MSVC 2017 (x64) C++17",
-            os: windows-2016,
+            os: windows-2019,
             cxx: "cl",
-            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2017/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvars64.bat",
             cxxver: 17,
+            msvcver: 2017,
           }
           - {
             name: "Windows MSVC 2017 (x64) C++20",
-            os: windows-2016,
+            os: windows-2019,
             cxx: "cl",
-            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2017/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvars64.bat",
             cxxver: 20,
+            msvcver: 2017,
           }
           - {
             name: "Windows MSVC 2019 (x64) C++17",
@@ -241,6 +243,16 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
         sudo apt-get install g++-11
+
+    - name: Install MSVC 2017
+      id: install_msvc_2017
+      if: startsWith(matrix.config.os, 'windows-2019') && ( matrix.config.cxx == 'cl' ) && ( matrix.config.msvcver == 2017 )
+      shell: bash
+      working-directory: ${{ env.HOME }}
+      run: |
+        choco install visualstudio2017community
+        choco install visualstudio2017-workload-nativedesktop
+        choco install visualstudio2017-workload-vctools
 
     - name: Create Build Environment
       # Some projects don't allow in-source building, so create a separate build directory

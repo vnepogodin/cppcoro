@@ -124,6 +124,22 @@ jobs:
             cxxver: 20,
           }
           - {
+            name: "Linux clang-15 C++17",
+            os: ubuntu-20.04,
+            cxx: "clang++-15",
+            cxx_flags: -stdlib=libc++,
+            exe_linker_flags: -lc++,
+            cxxver: 17,
+          }
+          - {
+            name: "Linux clang-15 C++20",
+            os: ubuntu-20.04,
+            cxx: "clang++-15",
+            cxx_flags: -stdlib=libc++,
+            exe_linker_flags: -lc++,
+            cxxver: 20,
+          }
+          - {
             name: "Windows MSVC 2017 (x64) C++17",
             os: windows-2019,
             cxx: "cl",
@@ -225,6 +241,17 @@ jobs:
         chmod +x llvm.sh
         sudo ./llvm.sh 14
         sudo apt-get install libc++-14-dev libc++abi-14-dev libunwind-14-dev
+
+    - name: Install Clang 15
+      id: install_clang_15
+      if: startsWith(matrix.config.os, 'ubuntu') && ( matrix.config.cxx == 'clang++-15' )
+      shell: bash
+      working-directory: ${{ env.HOME }}
+      run: |
+        wget https://apt.llvm.org/llvm.sh
+        chmod +x llvm.sh
+        sudo ./llvm.sh 15
+        sudo apt-get install libc++-15-dev libc++abi-15-dev libunwind-15-dev
 
     - name: Install g++ 10
       id: install_gcc_10
